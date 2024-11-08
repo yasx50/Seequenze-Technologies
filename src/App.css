@@ -1,0 +1,14 @@
+/* App.css */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  body, html {
+    overflow-x: hidden; /* Hide horizontal scrollbar globally */
+    width: 100%; /* Ensure body and html take the full width */
+    scroll-behavior: smooth;
+
+  }
+  
