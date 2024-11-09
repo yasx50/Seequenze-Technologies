@@ -59,7 +59,7 @@ const TodoTasks = () => {
       </div>
       {/* This button is just an example for testing */}
       <button onClick={() => addNewTask({ title: "New Task", description: "This is a new task", status: "To Do" })}>
-        Add New Task
+       
       </button>
     </div>
   );

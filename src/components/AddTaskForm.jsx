@@ -95,6 +95,7 @@ const AddTaskForm = () => {
           <option value="To Do">To Do</option>
           <option value="In Progress">In Progress</option>
           <option value="Completed">Completed</option>
+          <option value="Expired">Expired</option>
         </select>
         Due Date<input
           type="date"
