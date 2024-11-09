@@ -26,14 +26,16 @@ router.get('/', async (req, res) => {
 
 // Update task status
 router.put('/update/:id', async (req, res) => {
-  const { status } = req.body;
+  const { status } = req.body; // This is the new status for the task, sent in the request body.
   try {
+    // Finds the task by its ID (from the URL) and updates its status.
     const task = await Task.findByIdAndUpdate(req.params.id, { status }, { new: true });
-    res.status(200).json(task);
+    res.status(200).json(task); // Sends back the updated task data.
   } catch (err) {
     res.status(400).json({ message: "Error updating task", error: err });
   }
 });
+
 
 // Delete a task
 router.delete('/:id', async (req, res) => {
