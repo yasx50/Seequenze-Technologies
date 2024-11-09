@@ -13,11 +13,17 @@ import Login from './components/Login';  // Import Login component
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
-  // Check if the user is logged in based on token in localStorage
+  // Check if the user is logged in based on cookie
   useEffect(() => {
-    const token = localStorage.getItem('token');
+    const cookies = document.cookie.split(';');
+    const token = cookies.find(cookie => cookie.trim().startsWith('token='));
+
     if (token) {
+      // Token exists, set authenticated state to true
       setIsAuthenticated(true);
+    } else {
+      // No token, set authenticated state to false
+      setIsAuthenticated(false);
     }
   }, []);
 

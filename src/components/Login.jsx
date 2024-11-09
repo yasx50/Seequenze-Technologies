@@ -13,11 +13,16 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:5000/api/auth/login', credentials);
-      localStorage.setItem('token', response.data.token); // Store token in localStorage
+      // Ensure you send credentials with cookies (if using httpOnly cookies)
+      const response = await axios.post('http://localhost:5000/api/auth/login', credentials, {
+        withCredentials: true, // Make sure cookies are sent and received
+      });
+
       alert('Login successful!');
+      // Redirect to dashboard or any other protected page after login
+      window.location.replace('/'); // Replace with your desired path
     } catch (err) {
-      setError('Invalid credentials');
+      setError('Invalid credentials. Please try again.');
     }
   };
 

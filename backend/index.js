@@ -13,7 +13,10 @@ const port = process.env.PORT || 5000;
 
 // Middleware
 app.use(express.json()); // For parsing application/json
-app.use(cors()); // To allow cross-origin requests
+app.use(cors({
+  origin:'http://localhost:5173',
+  credentials:true,
+})); // To allow cross-origin requests
 app.use('/api/tasks', taskRoutes);
 app.use('/api/auth', auth);
 
