@@ -9,7 +9,7 @@ const CompletedTasks = ({tasks}) => {
   useEffect(() => {
     const fetchCompletedTasks = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/api/tasks');
+        const response = await axios.get('http://localhost:5000/user');
         const tasks = response.data.filter(task => task.status === 'Completed');
         setCompletedTasks(tasks);
       } catch (err) {

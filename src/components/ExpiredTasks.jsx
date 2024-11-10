@@ -7,7 +7,7 @@ const ExpiredTasks = ({tasks}) => {
   useEffect(() => {
     const fetchExpiredTasks = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/api/tasks');
+        const response = await axios.get('http://localhost:5000/user');
         // Assuming tasks have an 'expirationDate' and status is 'Expired' when expired
         const expired = response.data.filter(task => task.status === 'Expired');
         setExpiredTasks(expired);

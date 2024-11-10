@@ -4,7 +4,7 @@ const User = require('../models/User-model');
 const Task = require('../models/Task-model');
 
 // Route to get user info and tasks based on the cookie
-router.get('/user', async (req, res) => {
+router.get('/', async (req, res) => {
   try {
     // Get the user data from the cookie
     const userCookie = JSON.parse(req.cookies.user || '{}');
