@@ -5,26 +5,33 @@ const Login = () => {
   const [credentials, setCredentials] = useState({ email: '', password: '' });
   const [error, setError] = useState('');
 
+  // Function to handle input changes and update state
   const handleChange = (e) => {
     const { name, value } = e.target;
     setCredentials((prev) => ({ ...prev, [name]: value }));
   };
 
+  // Function to handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      // Ensure you send credentials with cookies (if using httpOnly cookies)
-      const response = await axios.post('http://localhost:5000/api/auth/login', credentials, {
-        withCredentials: true, // Make sure cookies are sent and received
-      });
-
+      console.log('Logging in with:', credentials);
+  
+      const response = await axios.post(
+        'http://localhost:5000/api/auth/login',
+        credentials,
+        { withCredentials: true } // This line enables sending cookies
+      );
+  
       alert('Login successful!');
       // Redirect to dashboard or any other protected page after login
-      window.location.replace('/'); // Replace with your desired path
+      // window.location.replace('/'); // Replace with your desired path
     } catch (err) {
+      console.error('Error during login:', err.response ? err.response.data : err.message);
       setError('Invalid credentials. Please try again.');
     }
   };
+  
 
   return (
     <div className="flex justify-center items-center min-h-screen bg-gray-900 text-white">

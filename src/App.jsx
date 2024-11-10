@@ -9,29 +9,40 @@ import Header from './components/Header';
 import Footer from './components/Footer';
 import Register from './components/Register';  // Import Register component
 import Login from './components/Login';  // Import Login component
+import axios from 'axios';
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [userData, setUserData] = useState(null);
+  const [tasks, setTasks] = useState([]);  // Initialize tasks as an empty array
+  const [error, setError] = useState(null);
 
-  // Check if the user is logged in based on cookie
   useEffect(() => {
     const cookies = document.cookie.split(';');
     const token = cookies.find(cookie => cookie.trim().startsWith('token='));
 
     if (token) {
-      // Token exists, set authenticated state to true
       setIsAuthenticated(true);
+      fetchUserData();
     } else {
-      // No token, set authenticated state to false
       setIsAuthenticated(false);
     }
   }, []);
+
+  const fetchUserData = async () => {
+    try {
+      const response = await axios.get('/user');  // Assuming '/user' is the backend endpoint
+      setUserData(response.data.user);
+      setTasks(response.data.tasks || []);  // Set tasks to an empty array if undefined
+    } catch (error) {
+      setError('Failed to fetch user data');
+    }
+  };
 
   return (
     <div className="min-h-screen w-full overflow-x-hidden bg-black">
       <Header />
 
-      {/* If not authenticated, show login/register form */}
       {!isAuthenticated ? (
         <div className="flex justify-center items-center h-screen">
           <div className="flex flex-col items-center space-y-4">
@@ -44,17 +55,20 @@ function App() {
           </div>
         </div>
       ) : (
-        // If authenticated, show the task-related components
         <div className="flex flex-col sm:flex-row sm:space-x-4 overflow-x-auto p-4">
           <div className="flex flex-col space-y-4 sm:w-1/3 lg:w-1/4">
-            <AddTaskForm />
-            <CompletedTasks />
-            <ExpiredTasks />
+            {userData ? (
+              <AddTaskForm userId={userData._id} />
+            ) : (
+              <p className="text-white">Loading user data...</p>
+            )}
+            <CompletedTasks tasks={tasks?.filter(task => task.status === 'Completed')} />
+            <ExpiredTasks tasks={tasks?.filter(task => task.status === 'Expired')} />
           </div>
 
           <div className="flex flex-col space-y-4 sm:w-2/3 lg:w-3/4">
-            <TaskDetail />
-            <TaskList />
+            <TaskDetail task={tasks[0]} />  {/* Assuming you want to show details for the first task */}
+            <TaskList tasks={tasks} />
           </div>
         </div>
       )}

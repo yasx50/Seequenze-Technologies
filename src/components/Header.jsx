@@ -8,9 +8,9 @@ const Header = ({ onLogout }) => {
       // Call the logout API endpoint
       const response = await axios.post('http://localhost:5000/api/auth/logout', {}, { withCredentials: true });
       console.log(response.data.message); // "Logged out successfully"
-      
-      // Call the onLogout function passed from the parent to update authentication state
-      onLogout(); 
+
+      // Reload the page after successful logout
+      window.location.reload();
     } catch (error) {
       console.error('Error logging out:', error);
     }

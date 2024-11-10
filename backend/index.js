@@ -4,6 +4,7 @@ const cors = require('cors');
 require('dotenv').config();
 const taskRoutes = require('./routes/tasks');
 const auth = require('./routes/auth')
+const display = require('./routes/displaydata')
 
 const authMiddleWare = require('./middleware/auth-controler')
 
@@ -19,6 +20,7 @@ app.use(cors({
 })); // To allow cross-origin requests
 app.use('/api/tasks', taskRoutes);
 app.use('/api/auth', auth);
+app.use('/user',display)
 
 // Database connection
 mongoose.connect(process.env.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })

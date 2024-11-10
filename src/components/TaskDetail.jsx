@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 
-const TaskDetail = () => {
+const TaskDetail = ({tasks}) => {
   const [task, setTask] = useState(null);
 
   useEffect(() => {

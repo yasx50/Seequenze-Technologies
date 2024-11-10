@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { FaCheckCircle } from 'react-icons/fa';
 
-const CompletedTasks = () => {
+const CompletedTasks = ({tasks}) => {
   const [completedTasks, setCompletedTasks] = useState([]);
 
   useEffect(() => {
