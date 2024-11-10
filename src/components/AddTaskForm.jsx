@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { FaPlusCircle } from 'react-icons/fa';
 import axios from 'axios';
 
-const AddTaskForm = () => {
+const AddTaskForm = ({userId}) => {
   const [task, setTask] = useState({
     title: '',
     description: '',

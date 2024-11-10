@@ -31,7 +31,8 @@ function App() {
 
   const fetchUserData = async () => {
     try {
-      const response = await axios.get('/user');  // Assuming '/user' is the backend endpoint
+      const response = await axios.get('/user');
+      // Assuming '/user' is the backend endpoint
       setUserData(response.data.user);
       setTasks(response.data.tasks || []);  // Set tasks to an empty array if undefined
     } catch (error) {
