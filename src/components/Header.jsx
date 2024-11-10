@@ -6,7 +6,7 @@ const Header = ({ onLogout }) => {
   const handleLogout = async () => {
     try {
       // Call the logout API endpoint
-      const response = await axios.post('http://localhost:5000/api/auth/logout', {}, { withCredentials: true });
+      const response = await axios.post('https://api-01r3.onrender.com/api/auth/logout', {}, { withCredentials: true });
       console.log(response.data.message); // "Logged out successfully"
 
       // Reload the page after successful logout

@@ -4,7 +4,7 @@ import TodoTasks from './TodoTasks';
 import InProgressTasks from './InProgressTasks';
 import DoneTasks from './DoneTasks';
 
-const TaskList = ({tasks}) => {
+const TaskList = () => {
   // const tasks = [
   //   { id: 1, title: 'Task 1', status: 'To Do' },
   //   { id: 2, title: 'Task 2', status: 'In Progress' },

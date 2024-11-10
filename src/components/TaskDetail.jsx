@@ -8,7 +8,7 @@ const TaskDetail = ({tasks}) => {
   useEffect(() => {
     const fetchInProgressTask = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/api/tasks');
+        const response = await axios.get('https://api-01r3.onrender.com/user');
         const inProgressTask = response.data.find(task => task.status === 'In Progress');
         setTask(inProgressTask || null); // Set the task if found, otherwise set null
       } catch (err) {

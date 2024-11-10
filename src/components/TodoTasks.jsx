@@ -11,7 +11,7 @@ const TodoTasks = () => {
 
   const fetchTasks = async () => {
     try {
-      const response = await axios.get('http://localhost:5000/api/tasks');
+      const response = await axios.get('https://api-01r3.onrender.com/user');
       const todoTasks = response.data.filter(task => task.status === 'To Do');
       setTasks(todoTasks);
     } catch (err) {
