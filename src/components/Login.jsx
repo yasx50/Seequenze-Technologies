@@ -25,7 +25,7 @@ const Login = () => {
   
       alert('Login successful!');
       // Redirect to dashboard or any other protected page after login
-      window.location.reload() // Replace with your desired path
+      // window.location.reload() // Replace with your desired path
     } catch (err) {
       console.error('Error during login:', err.response ? err.response.data : err.message);
       setError('Invalid credentials. Please try again.');

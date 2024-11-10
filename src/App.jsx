@@ -31,7 +31,7 @@ function App() {
 
   const fetchUserData = async () => {
     try {
-      const response = await axios.get('http://localhost:5000/user');
+      const response = await axios.get('https://api-01r3.onrender.com/user');
       // Assuming '/user' is the backend endpoint
       setUserData(response.data.user);
       setTasks(response.data.tasks || []);  // Set tasks to an empty array if undefined
