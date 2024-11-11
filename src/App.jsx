@@ -10,6 +10,7 @@ import Footer from './components/Footer';
 import Register from './components/Register';  // Import Register component
 import Login from './components/Login';  // Import Login component
 import axios from 'axios';
+import ShowLogReg from './components/ShowLogReg';
 
 function App() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -49,9 +50,7 @@ function App() {
           <div className="flex flex-col items-center space-y-4">
             <h2 className="text-white">Please log in or register to access the app</h2>
             <div className="flex flex-col space-y-4">
-              <Login />
-              <span className="text-white">Or</span>
-              <Register />
+              <ShowLogReg/> 
             </div>
           </div>
         </div>
