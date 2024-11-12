@@ -14,10 +14,7 @@ const port = process.env.PORT || 5000;
 
 // Middleware
 app.use(express.json()); // For parsing application/json
-app.use(cors({
-  origin:'https://seequenze-technologies.onrender.com',
-  credentials:true,
-})); // To allow cross-origin requests
+app.use(cors()); // To allow cross-origin requests
 app.use('/api/tasks', taskRoutes);
 app.use('/api/auth', auth);
 app.use('/user',display)
