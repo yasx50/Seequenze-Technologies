@@ -31,7 +31,7 @@ const AddTaskForm = ({userId}) => {
 
     try {
       // Send data to backend
-      const response = await axios.post('https://api-01r3.onrender.com/api/tasks/add', newTask);
+      const response = await axios.post(`${process.env.REACT_APP_LOCAL}/api/tasks/add`, newTask);
       
       // Display success message
       setSuccessMessage('Task added successfully!');

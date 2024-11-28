@@ -18,7 +18,7 @@ const Login = () => {
       console.log('Logging in with:', credentials);
   
       const response = await axios.post(
-        'https://api-01r3.onrender.com/api/auth/login',
+        `${import.meta.env.VITE_API_URL}/api/auth/login`,
         credentials,
         { withCredentials: true } // This line enables sending cookies
       );

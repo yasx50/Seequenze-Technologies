@@ -7,7 +7,7 @@ const ExpiredTasks = ({tasks}) => {
   useEffect(() => {
     const fetchExpiredTasks = async () => {
       try {
-        const response = await axios.get('https://api-01r3.onrender.com/user');
+        const response = await axios.get(`${process.env.REACT_APP_LOCAL}/user`);
         // Assuming tasks have an 'expirationDate' and status is 'Expired' when expired
         const expired = response.data.filter(task => task.status === 'Expired');
         setExpiredTasks(expired);

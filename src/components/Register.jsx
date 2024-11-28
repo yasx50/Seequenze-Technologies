@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import { CgLogIn } from 'react-icons/cg';
 
 const Register = () => {
   const [user, setUser] = useState({ username: '', email: '', password: '' });
@@ -12,10 +13,12 @@ const Register = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    console.log(import.meta.env.VITE_API_URL)
     try {
-      await axios.post('https://api-01r3.onrender.com/api/auth/register', user);
+      await axios.post(`${import.meta.env.VITE_API_URL}/api/auth/register`, user);
       alert('Registration successful!');
     } catch (err) {
+      console.log("error occured in register component!!",err)
       setError('Error registering user');
     }
   };

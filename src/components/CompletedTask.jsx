@@ -9,7 +9,7 @@ const CompletedTasks = ({tasks}) => {
   useEffect(() => {
     const fetchCompletedTasks = async () => {
       try {
-        const response = await axios.get('https://api-01r3.onrender.com/user');
+        const response = await axios.get(`${process.env.REACT_APP_LOCAL}/user`);
         const tasks = response.data.filter(task => task.status === 'Completed');
         setCompletedTasks(tasks);
       } catch (err) {
