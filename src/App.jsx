@@ -32,7 +32,9 @@ function App() {
 
   const fetchUserData = async () => {
     try {
-      const response = await axios.get(`${import.meta.env.VITE_API_URL}/user`);
+      const response = await axios.get(`${import.meta.env.VITE_API_URL}/user`,{
+        withCredentials:true
+      });
       // Assuming '/user' is the backend endpoint
       setUserData(response.data.user);
       setTasks(response.data.tasks || []);  // Set tasks to an empty array if undefined

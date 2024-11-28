@@ -8,7 +8,7 @@ const DoneTasks = () => {
   useEffect(() => {
     const fetchTasks = async () => {
       try {
-        const response = await axios.get(`${process.env.REACT_APP_LOCAL}/user`);
+        const response = await axios.get(`${import.meta.env.VITE_API_URL}/user`);
         const completedTasks = response.data.filter(task => task.status === 'In Progress');
         setTasks(completedTasks);
       } catch (err) {
@@ -22,7 +22,7 @@ const DoneTasks = () => {
   const markAsCompleted = async (taskId) => {
     try {
       // Update the task's status to "Completed" in the backend
-      await axios.put(`http://localhost:5000/api/tasks/update/${taskId}`, { status: 'Completed' });
+      await axios.put(`${import.meta.env.VITE_API_URL}/api/tasks/update/${taskId}`, { status: 'Completed' });
       // Remove the task from the local state once it's marked as completed
       setTasks(prevTasks => prevTasks.filter(task => task._id !== taskId));
     } catch (err) {

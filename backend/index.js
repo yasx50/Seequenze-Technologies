@@ -5,6 +5,7 @@ require('dotenv').config();
 const taskRoutes = require('./routes/tasks');
 const auth = require('./routes/auth')
 const display = require('./routes/displaydata')
+const cookieParser = require('cookie-parser')
 
 const authMiddleWare = require('./middleware/auth-controler')
 
@@ -18,11 +19,12 @@ const corsOptions = {
   origin: 'http://localhost:5173', // Your frontend URL
   credentials: true, // Allow cookies and credentials
 };
-
+app.use(cookieParser())
 app.use(cors(corsOptions)); // Apply CORS middleware
 app.use('/api/tasks', taskRoutes);
 app.use('/api/auth', auth);
 app.use('/user',display)
+
 
 // Database connection
 mongoose.connect(process.env.MONGO_URI)

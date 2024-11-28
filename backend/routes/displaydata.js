@@ -4,6 +4,7 @@ const router = express.Router();
 const User = require('../models/User-model');
 const Task = require('../models/Task-model');
 const cookieParser = require('cookie-parser');
+const authenticated = require('../middleware/auth-controler')
 
 require('dotenv').config();
 

@@ -31,7 +31,7 @@ const AddTaskForm = ({userId}) => {
 
     try {
       // Send data to backend
-      const response = await axios.post(`${process.env.REACT_APP_LOCAL}/api/tasks/add`, newTask);
+      const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/tasks/add`, newTask);
       
       // Display success message
       setSuccessMessage('Task added successfully!');

@@ -25,16 +25,10 @@ router.post('/register', async (req, res) => {
     await newUser.save();
 
     // Generate JWT token
-    const token = jwt.sign({ id: newUser._id, username: newUser.username }, process.env.JWT_SECRET, {
-      expiresIn: '1h',
-    });
+    const token = jwt.sign({ id: newUser._id, username: newUser.username }, process.env.JWT_SECRET);
 
     // Send the token as an HTTP-only cookie
-    res.cookie('token', token, {
-      // httpOnly: true, // Ensures the cookie can't be accessed via JavaScript
-      // secure: process.env.NODE_ENV === 'production', // Ensures the cookie is only sent over HTTPS in production
-      maxAge: 3600000, // Expires in 1 hour
-    });
+    res.cookie('token', token);
 
     res.status(201).json({ message: 'User registered successfully' });
   } catch (err) {
@@ -67,8 +61,8 @@ router.post('/login', async (req, res) => {
     // Step 3: Generate JWT token if authentication is successful
     const token = jwt.sign(
       { id: user._id, username: user.username },
-      process.env.JWT_SECRET,
-      { expiresIn: '1h' }
+      process.env.JWT_SECRET
+      
     );
 
     // Step 4: Set the JWT as a cookie
