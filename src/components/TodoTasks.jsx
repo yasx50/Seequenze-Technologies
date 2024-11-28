@@ -11,7 +11,7 @@ const TodoTasks = () => {
 
   const fetchTasks = async () => {
     try {
-      const response = await axios.get(`${process.env.REACT_APP_LOCAL}/user`);
+      const response = await axios.get(`${import.meta.env.VITE_API_URL}/user`);
       const todoTasks = response.data.filter(task => task.status === 'To Do');
       setTasks(todoTasks);
     } catch (err) {
@@ -21,7 +21,7 @@ const TodoTasks = () => {
 
   const addNewTask = async (newTask) => {
     try {
-      const response = await axios.post('http://localhost:5000/api/tasks', newTask);
+      const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/tasks`, newTask);
       setTasks(prevTasks => [...prevTasks, response.data]); // Add new task to the existing tasks
     } catch (err) {
       console.error('Error adding new task:', err);
@@ -30,7 +30,7 @@ const TodoTasks = () => {
 
   const moveToInProgress = async (taskId) => {
     try {
-      await axios.put(`http://localhost:5000/api/tasks/update/${taskId}`, { status: 'In Progress' });
+      await axios.put(`${import.meta.env.VITE_API_URL}/api/tasks/update/${taskId}`, { status: 'In Progress' });
       setTasks(prevTasks => prevTasks.filter(task => task._id !== taskId));
     } catch (err) {
       console.error('Error updating task:', err);

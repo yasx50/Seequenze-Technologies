@@ -8,7 +8,7 @@ const InProgressTasks = () => {
   useEffect(() => {
     const fetchTasks = async () => {
       try {
-        const response = await axios.get(`${process.env.REACT_APP_LOCAL}/user`);
+        const response = await axios.get(`${import.meta.env.VITE_API_URL}/user`);
         const inProgressTasks = response.data.filter(task => task.status === 'In Progress');
         setTasks(inProgressTasks);
       } catch (err) {

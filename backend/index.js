@@ -14,8 +14,12 @@ const port = process.env.PORT || 5000;
 
 // Middleware
 app.use(express.json()); // For parsing application/json
-app.use(cors({ origin: 'http://localhost:5173' })); // Replace with your frontend URL
- // To allow cross-origin requests
+const corsOptions = {
+  origin: 'http://localhost:5173', // Your frontend URL
+  credentials: true, // Allow cookies and credentials
+};
+
+app.use(cors(corsOptions)); // Apply CORS middleware
 app.use('/api/tasks', taskRoutes);
 app.use('/api/auth', auth);
 app.use('/user',display)
