@@ -29,10 +29,9 @@ router.post('/register', async (req, res) => {
     // Send the token as an HTTP-only cookie
     res.cookie('token', token, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === 'production', // Only sent over HTTPS in production
-      maxAge: 3600000, // Expires in 1 hour
-      sameSite: 'lax',
-    });
+      secure:true, 
+      sameSite: "none",
+    }).send();
 
     res.status(201).json({ message: 'User registered successfully' });
   } catch (err) {
