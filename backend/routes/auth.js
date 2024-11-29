@@ -56,17 +56,15 @@ router.post('/login', async (req, res) => {
     // Generate JWT token
     const token = jwt.sign(
       { id: user._id, username: user.username },
-      process.env.JWT_SECRET,
-      { expiresIn: '1h' }
+      process.env.JWT_SECRET
     );
 
     // Set the JWT as a cookie
     res.cookie('token', token, {
       httpOnly: true,
       secure: true, // HTTPS
-      sameSite: 'none', // Allow cross-origin cookies
-      maxAge: 3600000,
-    });
+      sameSite: 'none'
+    }).send();
     
 
     res.json({ message: 'Login successful' });
