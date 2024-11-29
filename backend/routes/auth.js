@@ -4,7 +4,6 @@ const jwt = require('jsonwebtoken');
 const User = require('../models/User-model');
 const router = express.Router();
 const cookieParser = require('cookie-parser'); // Import cookie-parser
-
 require('dotenv').config();
 
 // Use cookie-parser middleware to handle cookies
@@ -28,12 +27,16 @@ router.post('/register', async (req, res) => {
     const token = jwt.sign({ id: newUser._id, username: newUser.username }, process.env.JWT_SECRET);
 
     // Send the token as an HTTP-only cookie
-    res.cookie('token', token);
+    res.cookie('token', token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production', // Only sent over HTTPS in production
+      maxAge: 3600000, // Expires in 1 hour
+      sameSite: 'lax',
+    });
 
     res.status(201).json({ message: 'User registered successfully' });
   } catch (err) {
-    console.log('error occured !!',err);
-    
+    console.log('Error occurred:', err);
     res.status(500).json({ message: 'Error registering user' });
   }
 });
@@ -43,55 +46,40 @@ router.post('/login', async (req, res) => {
   const { email, password } = req.body;
 
   try {
-    // Step 1: Find user by email
+    // Find user by email
     const user = await User.findOne({ email });
-    if (!user) {
-      console.log("User not found for email:", email); // Debugging statement
-      return res.status(400).json({ message: 'User not found' });
-    }
+    if (!user) return res.status(400).json({ message: 'User not found' });
 
-    // Step 2: Compare input password with hashed password in DB
+    // Compare password
     const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch) {
-      console.log("Password mismatch for user:", email); // Debugging statement
-      return res.status(400).json({ message: 'Invalid credentials' });
-    }
-    console.log("Password match successful for user:", email);
+    if (!isMatch) return res.status(400).json({ message: 'Invalid credentials' });
 
-    // Step 3: Generate JWT token if authentication is successful
+    // Generate JWT token
     const token = jwt.sign(
       { id: user._id, username: user.username },
-      process.env.JWT_SECRET
-      
+      process.env.JWT_SECRET,
+      { expiresIn: '1h' }
     );
 
-    // Step 4: Set the JWT as a cookie
+    // Set the JWT as a cookie
     res.cookie('token', token, {
-    //   httpOnly: false, // Ensures the cookie can't be accessed via JavaScript
-    //   secure: false, // Only sent over HTTPS in production
-    //   maxAge: 3600000,
-    //   sameSite:'lax' // Expires in 1 hour
-    // 
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      maxAge: 3600000,
+      sameSite: 'lax',
     });
-    console.log(token);
-    
 
-    console.log("Login successful, token generated for user:", email);
     res.json({ message: 'Login successful' });
   } catch (err) {
-    console.error("Error during login process:", err);
+    console.error("Error during login:", err);
     res.status(500).json({ message: 'Error logging in' });
   }
 });
 
-
-// Logout Route
 // Logout Route
 router.post('/logout', (req, res) => {
   // Clear the 'token' cookie
-  res.clearCookie('token', );
-
-  // Send a response to confirm logout
+  res.clearCookie('token');
   res.json({ message: 'Logged out successfully' });
 });
 
