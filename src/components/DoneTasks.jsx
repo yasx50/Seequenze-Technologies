@@ -8,8 +8,14 @@ const DoneTasks = () => {
   useEffect(() => {
     const fetchTasks = async () => {
       try {
-        const response = await axios.get(`${import.meta.env.VITE_API_URL}/user`);
-        const completedTasks = response.data.filter(task => task.status === 'In Progress');
+        const response = await axios.get(`${import.meta.env.VITE_API_URL}/user`, { withCredentials: true });
+        // console.log(response.data); // Check the structure of response.data
+
+        // If the response is an object and tasks are inside a 'tasks' property
+        const completedTasks = Array.isArray(response.data) 
+          ? response.data.filter(task => task.status === 'Completed') 
+          : response.data.tasks.filter(task => task.status === 'Completed');
+
         setTasks(completedTasks);
       } catch (err) {
         console.error('Error fetching tasks:', err);
@@ -22,7 +28,11 @@ const DoneTasks = () => {
   const markAsCompleted = async (taskId) => {
     try {
       // Update the task's status to "Completed" in the backend
-      await axios.put(`${import.meta.env.VITE_API_URL}/api/tasks/update/${taskId}`, { status: 'Completed' });
+      await axios.put(
+        `${import.meta.env.VITE_API_URL}/api/tasks/update/${taskId}`,
+        { status: 'Expired' },
+        { withCredentials: true } // Make sure to send cookies with the request
+      );
       // Remove the task from the local state once it's marked as completed
       setTasks(prevTasks => prevTasks.filter(task => task._id !== taskId));
     } catch (err) {

@@ -8,8 +8,18 @@ const InProgressTasks = () => {
   useEffect(() => {
     const fetchTasks = async () => {
       try {
-        const response = await axios.get(`${import.meta.env.VITE_API_URL}/user`);
-        const inProgressTasks = response.data.filter(task => task.status === 'In Progress');
+        // Fetching tasks from the API
+        const response = await axios.get(`${import.meta.env.VITE_API_URL}/user`, { withCredentials: true });
+
+        // Handle response structure
+        const tasks = Array.isArray(response.data) ? response.data : response.data.tasks || [];
+        console.log('API Response:', tasks); // Log the response to inspect the structure
+
+        // Filter tasks with "In Progress" status (case-insensitive)
+        const inProgressTasks = tasks.filter(task => (task.status || '').toLowerCase() === 'in progress');
+        console.log('Filtered In-Progress Tasks:', inProgressTasks);
+
+        // Update the state with filtered tasks
         setTasks(inProgressTasks);
       } catch (err) {
         console.error('Error fetching tasks:', err);
@@ -22,8 +32,13 @@ const InProgressTasks = () => {
   const moveToCompleted = async (taskId) => {
     try {
       // Update the task status to "Completed" in the backend
-      await axios.put(`http://localhost:5000/api/tasks/update/${taskId}`, { status: 'Completed' });
-      // Remove the task from the "In Progress" list
+      await axios.put(
+        `${import.meta.env.VITE_API_URL}/api/tasks/update/${taskId}`,
+        { status: 'Completed' },
+        { withCredentials: true }
+      );
+
+      // Remove the task from the "In Progress" list after completion
       setTasks(prevTasks => prevTasks.filter(task => task._id !== taskId));
     } catch (err) {
       console.error('Error updating task:', err);
@@ -38,20 +53,24 @@ const InProgressTasks = () => {
         </div>
       </h2>
       <div className="space-y-4">
-        {tasks.map(task => (
-          <div key={task._id} className="border-2 bg-gray-700 p-3 rounded shadow-sm flex items-center justify-between">
-            <div>
-              <h3 className="text-lg font-bold text-white">{task.title}</h3>
-              <p className="text-gray-400">{task.description}</p>
+        {tasks.length === 0 ? (
+          <p className="text-gray-400">No tasks in progress</p>
+        ) : (
+          tasks.map(task => (
+            <div key={task._id} className="border-2 bg-gray-700 p-3 rounded shadow-sm flex items-center justify-between">
+              <div>
+                <h3 className="text-lg font-bold text-white">{task.title}</h3>
+                <p className="text-gray-400">{task.description}</p>
+              </div>
+              <button
+                onClick={() => moveToCompleted(task._id)}
+                className="text-blue-500 hover:text-blue-400 transition duration-200"
+              >
+                <FaArrowRight className="text-2xl" />
+              </button>
             </div>
-            <button
-              onClick={() => moveToCompleted(task._id)}
-              className="text-blue-500 hover:text-blue-400 transition duration-200"
-            >
-              <FaArrowRight className="text-2xl" />
-            </button>
-          </div>
-        ))}
+          ))
+        )}
       </div>
     </div>
   );

@@ -4,10 +4,7 @@ import { FaCheckCircle } from 'react-icons/fa';
 
 const CompletedTasks = () => {
   const [completedTasks, setCompletedTasks] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
 
-  // Fetch completed tasks from the API
   useEffect(() => {
     const fetchCompletedTasks = async () => {
       try {
@@ -16,19 +13,14 @@ const CompletedTasks = () => {
           withCredentials: true, // Include credentials (cookies)
         });
 
-        // Check if response data is an array
-        if (Array.isArray(response.data)) {
-          // Filter tasks with a "Completed" status
-          const completed = response.data.filter(task => task.status === 'Completed');
-          setCompletedTasks(completed); // Update state with completed tasks
-        } else {
-          setError('Invalid response format: Expected an array of tasks.');
-        }
+        // Ensure response.data is an array or adjust based on actual structure
+        const tasks = Array.isArray(response.data) ? response.data : response.data.tasks || [];
+
+        // Filter tasks with a "Completed" status
+        const completed = tasks.filter(task => task.status === 'Completed');
+        setCompletedTasks(completed); // Update state with completed tasks
       } catch (err) {
-        setError('Error fetching completed tasks.');
         console.error('Error fetching completed tasks:', err);
-      } finally {
-        setLoading(false);
       }
     };
 
@@ -44,14 +36,6 @@ const CompletedTasks = () => {
       year: 'numeric',
     });
   };
-
-  if (loading) {
-    return <div className="text-center text-white">Loading completed tasks...</div>;
-  }
-
-  if (error) {
-    return <div className="text-center text-red-500">{error}</div>;
-  }
 
   return (
     <div className="bg-black text-white p-4">

@@ -1,15 +1,19 @@
-// TaskDetail.jsx
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 
-const TaskDetail = ({tasks}) => {
+const TaskDetail = () => {
   const [task, setTask] = useState(null);
 
   useEffect(() => {
     const fetchInProgressTask = async () => {
       try {
-        const response = await axios.get(`${import.meta.env.VITE_API_URL}/user`);
-        const inProgressTask = response.data.find(task => task.status === 'In Progress');
+        const response = await axios.get(`${import.meta.env.VITE_API_URL}/user`, { withCredentials: true });
+        
+        // Ensure response.data is an array or adjust for the actual structure
+        const tasks = Array.isArray(response.data) ? response.data : response.data.tasks || [];
+
+        // Find the first task that is 'In Progress'
+        const inProgressTask = tasks.find(task => task.status === 'In Progress');
         setTask(inProgressTask || null); // Set the task if found, otherwise set null
       } catch (err) {
         console.error('Error fetching task:', err);

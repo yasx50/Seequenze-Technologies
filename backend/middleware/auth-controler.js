@@ -1,27 +1,31 @@
 const jwt = require('jsonwebtoken');
-const User = require('../models/User-model'); // Import User model
 
 const auth = async (req, res, next) => {
   try {
-    // Get the token from the Authorization header
-    const token = req.header('Authorization').replace('Bearer ', '');
+    // Get the token from the cookies
+    const token = req.cookies.token;
 
-    // Verify the token
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
-
-    // Find the user associated with the token
-    const user = await User.findOne({ _id: decoded._id });
-
-    if (!user) {
-      throw new Error();
+    // If token doesn't exist, send an error
+    if (!token) {
+      return res.status(401).json({ message: 'Token not found' });
     }
 
-    // Attach the user to the request object
-    req.user = user;
+    // Verify and decode the token
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
-    // Proceed to the next middleware
+    // Extract data from decoded token
+    const userId = decoded.id;        // Extracted user ID
+    const username = decoded.username; // Extracted username
+console.log('the middleware hits!!!');
+
+
+    // You can also attach the user data to the request object for later use
+    req.user = { id: userId, username };
+
+    // Proceed to the next middleware or route handler
     next();
   } catch (err) {
+    console.error('Error during token verification:', err);
     res.status(401).json({ message: 'Please authenticate.' });
   }
 };
