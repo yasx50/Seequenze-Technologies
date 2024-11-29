@@ -13,14 +13,14 @@ const authMiddleWare = require('./middleware/auth-controler')
 const app = express();
 const port = process.env.PORT || 5000;
 
-// Middleware
-app.use(cors(corsOptions)); // Apply CORS middleware
-app.use(cookieParser())
-app.use(express.json()); // For parsing application/json
 const corsOptions = {
   origin: process.env.ORIGIN, // Your frontend URL
   credentials: true, // Allow cookies and credentials
 };
+// Middleware
+app.use(cors(corsOptions)); // Apply CORS middleware
+app.use(cookieParser())
+app.use(express.json()); // For parsing application/json
 app.use('/api/tasks', taskRoutes);
 app.use('/api/auth', auth);
 app.use('/user',display)
