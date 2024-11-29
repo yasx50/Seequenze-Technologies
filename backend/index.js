@@ -16,7 +16,7 @@ const port = process.env.PORT || 5000;
 // Middleware
 app.use(express.json()); // For parsing application/json
 const corsOptions = {
-  origin: 'https://hustler-api.onrender.com', // Your frontend URL
+  origin: 'https://hustler-rho.vercel.app/', // Your frontend URL
   credentials: true, // Allow cookies and credentials
 };
 app.use(cookieParser())
