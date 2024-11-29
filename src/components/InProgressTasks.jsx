@@ -13,11 +13,11 @@ const InProgressTasks = () => {
 
         // Handle response structure
         const tasks = Array.isArray(response.data) ? response.data : response.data.tasks || [];
-        console.log('API Response:', tasks); // Log the response to inspect the structure
+        // console.log('API Response:', tasks); // Log the response to inspect the structure
 
         // Filter tasks with "In Progress" status (case-insensitive)
         const inProgressTasks = tasks.filter(task => (task.status || '').toLowerCase() === 'in progress');
-        console.log('Filtered In-Progress Tasks:', inProgressTasks);
+        // console.log('Filtered In-Progress Tasks:', inProgressTasks);
 
         // Update the state with filtered tasks
         setTasks(inProgressTasks);

@@ -12,10 +12,10 @@ const CompletedTasks = () => {
         const response = await axios.get(`${import.meta.env.VITE_API_URL}/user`, {
           withCredentials: true, // Include credentials (cookies)
         });
-
+        
         // Ensure response.data is an array or adjust based on actual structure
         const tasks = Array.isArray(response.data) ? response.data : response.data.tasks || [];
-
+        
         // Filter tasks with a "Completed" status
         const completed = tasks.filter(task => task.status === 'Completed');
         setCompletedTasks(completed); // Update state with completed tasks
@@ -23,10 +23,10 @@ const CompletedTasks = () => {
         console.error('Error fetching completed tasks:', err);
       }
     };
-
+    
     fetchCompletedTasks();
   }, []); // Empty dependency array ensures it runs once after component mounts
-
+  
   // Utility to format dates (DD/MM/YYYY)
   const formatDate = (dateString) => {
     const date = new Date(dateString);
@@ -36,7 +36,8 @@ const CompletedTasks = () => {
       year: 'numeric',
     });
   };
-
+  
+  
   return (
     <div className="bg-black text-white p-4">
       <h2 className="text-2xl font-bold text-center mb-4">

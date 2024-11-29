@@ -2,14 +2,14 @@ import React, { useState } from 'react';
 import { FaPlusCircle } from 'react-icons/fa';
 import axios from 'axios';
 
-const AddTaskForm = ({userId}) => {
+const AddTaskForm = ({ userId }) => {
   const [task, setTask] = useState({
     title: '',
     description: '',
     status: 'To Do',
     dueDate: ''
   });
-  const [successMessage, setSuccessMessage] = useState('');
+  const [message, setMessage] = useState({ text: '', type: '' }); // Object to store message and type
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -31,10 +31,10 @@ const AddTaskForm = ({userId}) => {
 
     try {
       // Send data to backend
-      const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/tasks/add`, newTask,{withCredentials:true});
-      
+      const response = await axios.post(`${import.meta.env.VITE_API_URL}/api/tasks/add`, newTask, { withCredentials: true });
+
       // Display success message
-      setSuccessMessage('Task added successfully!');
+      setMessage({ text: 'Task added successfully!', type: 'success' });
 
       // Reset the form
       setTask({
@@ -45,12 +45,12 @@ const AddTaskForm = ({userId}) => {
       });
     } catch (err) {
       console.error('Error:', err);
-      setSuccessMessage('Error adding task.');
+      setMessage({ text: 'Error Please Fill All Details.', type: 'error' }); // Set error message
     }
 
-    // Clear the success message after 3 seconds
+    // Clear the message after 3 seconds
     setTimeout(() => {
-      setSuccessMessage('');
+      setMessage({ text: '', type: '' });
     }, 3000);
   };
 
@@ -63,10 +63,12 @@ const AddTaskForm = ({userId}) => {
         </div>
       </h1>
 
-      {/* Success Message */}
-      {successMessage && (
-        <div className="bg-green-700 text-white p-2 text-center mb-4 rounded">
-          {successMessage}
+      {/* Conditional rendering of success or error message */}
+      {message.text && (
+        <div
+          className={`p-2 text-center mb-4 rounded ${message.type === 'success' ? 'bg-green-700' : 'bg-red-700'}`}
+        >
+          {message.text}
         </div>
       )}
 
@@ -97,7 +99,8 @@ const AddTaskForm = ({userId}) => {
           <option value="Completed">Completed</option>
           <option value="Expired">Expired</option>
         </select>
-        Due Date<input
+        Due Date
+        <input
           type="date"
           name="dueDate"
           value={task.dueDate}
