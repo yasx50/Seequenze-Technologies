@@ -50,7 +50,7 @@ function App() {
       {!isAuthenticated ? (
         <div className="flex justify-center items-center h-screen">
           <div className="flex flex-col items-center space-y-4">
-            <h2 className="text-white">Please log in or register to access the app</h2>
+            <h2 className="text-white text-xl mt-10">Dominate Your Day, Crush Every Task!</h2>
             <div className="flex flex-col space-y-4">
               <ShowLogReg/> 
             </div>
