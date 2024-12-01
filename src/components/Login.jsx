@@ -1,41 +1,36 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import axios from 'axios';
+import { AuthContext } from '../AuthContext';
 
 const Login = () => {
+  const { setIsAuthenticated } = useContext(AuthContext); // Access context
   const [credentials, setCredentials] = useState({ email: '', password: '' });
   const [error, setError] = useState('');
 
-  // Function to handle input changes and update state
   const handleChange = (e) => {
     const { name, value } = e.target;
     setCredentials((prev) => ({ ...prev, [name]: value }));
   };
 
-  // Function to handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      // console.log('Logging in with:', credentials);
-  
       const response = await axios.post(
         `${import.meta.env.VITE_API_URL}/api/auth/login`,
         credentials,
-        { withCredentials: true } // This line enables sending cookies
+        { withCredentials: true }
       );
-  
+
+      setIsAuthenticated(true); // Update authentication status
       alert('Login successful!');
-      // window.location.reload();
-      // Redirect to dashboard or any other protected page after login
-      // window.location.reload() // Replace with your desired path
     } catch (err) {
       console.error('Error during login:', err.response ? err.response.data : err.message);
       setError('Invalid credentials. Please try again.');
     }
   };
-  
 
   return (
-    <div className="flex justify-center items-center  text-white">
+    <div className="flex justify-center items-center text-white">
       <div className="bg-gray-800 p-8 rounded-lg shadow-lg w-full max-w-md">
         <h2 className="text-3xl font-semibold text-center mb-6">Login</h2>
         {error && <p className="text-red-500 text-center mb-4">{error}</p>}

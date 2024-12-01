@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import './App.css';
 import TaskList from './components/Tasklist';
 import TaskDetail from './components/TaskDetail';
@@ -7,37 +7,29 @@ import CompletedTasks from './components/CompletedTask';
 import ExpiredTasks from './components/ExpiredTasks';
 import Header from './components/Header';
 import Footer from './components/Footer';
-import Register from './components/Register';  // Import Register component
-import Login from './components/Login';  // Import Login component
-import axios from 'axios';
 import ShowLogReg from './components/ShowLogReg';
+import { AuthContext } from './AuthContext';
+import axios from 'axios';
 
 function App() {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const { isAuthenticated, setIsAuthenticated } = useContext(AuthContext); // Access AuthContext
   const [userData, setUserData] = useState(null);
-  const [tasks, setTasks] = useState([]);  // Initialize tasks as an empty array
+  const [tasks, setTasks] = useState([]); // Initialize tasks as an empty array
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    const cookies = document.cookie.split(';');
-    const token = cookies.find(cookie => cookie.trim().startsWith('token='));
-
-    if (token) {
-      setIsAuthenticated(true);
+    if (isAuthenticated) {
       fetchUserData();
-    } else {
-      setIsAuthenticated(false);
     }
-  }, []);
+  }, [isAuthenticated]); // Re-fetch data whenever the authentication state changes
 
   const fetchUserData = async () => {
     try {
-      const response = await axios.get(`${import.meta.env.VITE_API_URL}/user`,{
-        withCredentials:true
+      const response = await axios.get(`${import.meta.env.VITE_API_URL}/user`, {
+        withCredentials: true,
       });
-      // Assuming '/user' is the backend endpoint
       setUserData(response.data.user);
-      setTasks(response.data.tasks || []);  // Set tasks to an empty array if undefined
+      setTasks(response.data.tasks || []); // Set tasks to an empty array if undefined
     } catch (error) {
       setError('Failed to fetch user data');
     }
@@ -50,9 +42,11 @@ function App() {
       {!isAuthenticated ? (
         <div className="flex justify-center items-center h-screen">
           <div className="flex flex-col items-center space-y-4">
-            <h2 className="text-white text-xl mt-10">Dominate Your Day, Crush Every Task!</h2>
+            <h2 className="text-white text-xl mt-10">
+              Dominate Your Day, Crush Every Task!
+            </h2>
             <div className="flex flex-col space-y-4">
-              <ShowLogReg/> 
+              <ShowLogReg />
             </div>
           </div>
         </div>
@@ -64,12 +58,12 @@ function App() {
             ) : (
               <p className="text-white">Loading user data...</p>
             )}
-            <CompletedTasks tasks={tasks?.filter(task => task.status === 'Completed')} />
-            <ExpiredTasks tasks={tasks?.filter(task => task.status === 'Expired')} />
+            <CompletedTasks tasks={tasks?.filter((task) => task.status === 'Completed')} />
+            <ExpiredTasks tasks={tasks?.filter((task) => task.status === 'Expired')} />
           </div>
 
           <div className="flex flex-col space-y-4 sm:w-2/3 lg:w-3/4">
-            <TaskDetail task={tasks[0]} />  {/* Assuming you want to show details for the first task */}
+            <TaskDetail task={tasks[0]} /> {/* Assuming you want to show details for the first task */}
             <TaskList tasks={tasks} />
           </div>
         </div>
