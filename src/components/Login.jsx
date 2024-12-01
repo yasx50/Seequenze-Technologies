@@ -24,7 +24,7 @@ const Login = () => {
       );
   
       alert('Login successful!');
-      window.location.reload();
+      // window.location.reload();
       // Redirect to dashboard or any other protected page after login
       // window.location.reload() // Replace with your desired path
     } catch (err) {

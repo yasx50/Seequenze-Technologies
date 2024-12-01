@@ -27,11 +27,7 @@ router.post('/register', async (req, res) => {
     const token = jwt.sign({ id: newUser._id, username: newUser.username }, process.env.JWT_SECRET);
 
     // Send the token as an HTTP-only cookie
-    res.cookie('token', token, {
-      httpOnly: true,
-      secure:true, 
-      sameSite: "none",
-    }).send();
+    res.cookie('token', token);
 
     res.status(201).json({ message: 'User registered successfully' });
   } catch (err) {
@@ -60,11 +56,7 @@ router.post('/login', async (req, res) => {
     );
 
     // Set the JWT as a cookie
-    res.cookie('token', token, {
-      httpOnly: true,
-      secure: true, // HTTPS
-      sameSite: 'none'
-    }).send();
+    res.cookie('token', token)
     
 
     res.json({ message: 'Login successful' });
